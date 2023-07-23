@@ -11,6 +11,7 @@ const {
   createUser, login,
 } = require('./controllers/users');
 const { URL_REGEX } = require('./utils/constants');
+const { corsMiddleware } = require('./middlewares/cors');
 
 // Создание экземпляра приложения Express
 const app = express();
@@ -30,6 +31,7 @@ app.use(requestLogger); // подключаем логгер запросов
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(corsMiddleware);
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({

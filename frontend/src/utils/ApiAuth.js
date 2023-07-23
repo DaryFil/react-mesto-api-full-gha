@@ -35,4 +35,4 @@ class ApiAuth {
     }).then(this._checkAnswer);
   }
 }
-export const apiAuth = new ApiAuth("https://auth.nomoreparties.co");
+export const apiAuth = new ApiAuth("http://api.darimon.nomoredomains.xyz");
