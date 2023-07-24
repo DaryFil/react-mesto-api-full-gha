@@ -1,7 +1,7 @@
 export const settings = {
   baseUrl: "http://api.darimon.nomoredomains.xyz",
   headers: {
-    authorization: "a54ec7ef-da76-40d6-af95-163ba9adf077",
+    authorization: `Bearer ${localStorage.getItem('jwt')}`,
     "Content-Type": "application/json",
   },
 };

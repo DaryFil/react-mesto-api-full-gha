@@ -5,7 +5,7 @@ import { useContext, useState } from "react";
 const Card = ({ card, onCardClick, onCardLike, onCardDelete }) => {
   const userId = useContext(CurrentUserContext)._id;
   const isOwn = card.owner._id === userId; // Определяем, являемся ли мы владельцем текущей карточки
-  const isLiked = card.likes.some((i) => i._id === userId);
+  const isLiked = card.likes.some((card) => card === userId);
 
   const handleCardClick = () => {
     onCardClick(card);
@@ -36,7 +36,7 @@ const handleCardDelete = () => {
         <div className="card__like">
           <button
             onClick={handleCardLike}
-            type="button" 
+            type="button"
             className={`card__like-button ${
               isLiked ? "card__like-button_active" : ""
             }`}

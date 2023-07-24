@@ -76,7 +76,7 @@ function App() {
       .toggleLike(card._id, isLiked ? "DELETE" : "PUT")
       .then((newCard) => {
         setCards((state) =>
-          state.map((c) => (c._id === card._id ? newCard : c))
+          state.map((c) => (c._id === card._id ? newCard.data : c))
         );
       })
       .catch((error) => console.log(`Ошибка: ${error}`));
@@ -96,7 +96,7 @@ function App() {
     api
       .saveUserInfo(data)
       .then((res) => {
-        setCurrentUser(res);
+        setCurrentUser(res.data);
         closeAllPopups();
       })
       .catch((error) => console.log(`Ошибка: ${error}`));
@@ -106,7 +106,7 @@ function App() {
     api
       .saveUserAvatar(data)
       .then((res) => {
-        setCurrentUser(res);
+        setCurrentUser(res.data);
         closeAllPopups();
       })
       .catch((error) => console.log(`Ошибка: ${error}`));
@@ -116,7 +116,7 @@ function App() {
     api
       .addNewCard(data)
       .then((newCard) => {
-        setCards([newCard, ...cards]);
+        setCards([...cards, newCard.data]);
         closeAllPopups();
       })
       .catch((error) => console.log(`Ошибка: ${error}`));
@@ -147,7 +147,6 @@ function App() {
         setHasToken(true);
         setIsAuth(true);
         setIsSuccess(true);
-        navigate("/sign-up");
       })
       .catch((error) => {
         setIsTooltipOpen(true);
@@ -165,12 +164,12 @@ function App() {
   }
   useEffect(() => {
     if (isAuth) {
-    Promise.all([api.getUserInfo(), api.getInitialCards()])
-      .then(([userData, cards]) => {
-        setCurrentUser(userData);
-        setCards(cards);
-      })
-      .catch((error) => console.log(`Ошибка: ${error}`));
+      Promise.all([api.getUserInfo(), api.getInitialCards()])
+        .then(([userData, cards]) => {
+          setCurrentUser(userData.data);
+          setCards(cards.data);
+        })
+        .catch((error) => console.log(`Ошибка: ${error}`));
     }
   }, [isAuth]);
 

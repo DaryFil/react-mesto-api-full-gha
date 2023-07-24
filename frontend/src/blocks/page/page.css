@@ -1,7 +1,7 @@
 .page {
   background-color: #000;
   min-width: 282px;
-  height: 1000vh;
+  height: 100vh;
   /* max-width: 880px;  */
   margin: 0 auto;
   /* padding: 0; */
@@ -13,4 +13,7 @@
   -ms-text-size-adjust: 100%;
   -moz-text-size-adjust: 100%;
   text-rendering: optimizeLegibility;
+}
+.root {
+  background-color: #000;
 }

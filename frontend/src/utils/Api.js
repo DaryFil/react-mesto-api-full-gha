@@ -1,4 +1,4 @@
-import { settings } from "./constants.js";
+import {settings} from "./constants.js";
 
 
 class Api {
@@ -23,30 +23,42 @@ class Api {
   getUserInfo() {
     return this._request(`/users/me`, {
       method: "GET",
-      headers: this._headers,
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('jwt')}`,
+        "Content-Type": "application/json",
+      },
     });
   }
 
-  saveUserInfo({ name, about }) {
+  saveUserInfo({name, about}) {
     return this._request(`/users/me`, {
       method: "PATCH",
-      headers: this._headers,
-      body: JSON.stringify({ name: name, about: about }),
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('jwt')}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({name: name, about: about}),
     });
   }
 
-  saveUserAvatar({ avatar }) {
+  saveUserAvatar({avatar}) {
     return this._request(`/users/me/avatar`, {
       method: "PATCH",
-      headers: this._headers,
-      body: JSON.stringify({ avatar: avatar }),
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('jwt')}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({avatar: avatar}),
     });
   }
 
   getInitialCards() {
     return this._request(`/cards`, {
       method: "GET",
-      headers: this._headers,
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('jwt')}`,
+        "Content-Type": "application/json",
+      },
     });
   }
 
@@ -54,25 +66,41 @@ class Api {
   addNewCard(data) {
     return this._request(`/cards`, {
       method: "POST",
-      headers: this._headers,
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('jwt')}`,
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(data),
     });
   }
+
   deleteCard(cardId) {
     return this._request(`/cards/${cardId}`, {
       method: "DELETE",
-      headers: this._headers,
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('jwt')}`,
+        "Content-Type": "application/json",
+      },
     });
   }
 
- 
+
   toggleLike(cardId, method) {
     return this._request(`/cards/${cardId}/likes`, {
       method: method,
-          headers: this._headers,
-        });
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('jwt')}`,
+        "Content-Type": "application/json",
+      },
+    });
   }
 }
 
-const api = new Api(settings);
+const api = new Api({
+  baseUrl: "http://api.darimon.nomoredomains.xyz",
+  headers: {
+    authorization: `Bearer ${localStorage.getItem('jwt')}`,
+    "Content-Type": "application/json",
+  },
+});
 export default api;
