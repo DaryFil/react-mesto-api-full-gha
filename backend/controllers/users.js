@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken'); // импортируем модуль jsonwebtoken
 const bcrypt = require('bcryptjs'); // импортируем bcrypt
+const { NODE_ENV, JWT_SECRET } = require('../config');
 const User = require('../models/user');
 const NotFoundError = require('../errors/not-found-err');
 const BadRequest = require('../errors/bad-request');
@@ -95,7 +96,7 @@ module.exports.login = (req, res, next) => {
   return User.findUserByCredentials(email, password)
     .then((user) => {
       res.send({
-        token: jwt.sign({ _id: user._id }, 'some-very-incredible-very-important-and-unbelievable-secret-key', { expiresIn: '7d' }),
+        token: jwt.sign({ _id: user._id },  NODE_ENV === 'production' ? JWT_SECRET : 'some-very-incredible-very-important-and-unbelievable-secret-key', { expiresIn: '7d' }),
       });
     })
     .catch(() => {

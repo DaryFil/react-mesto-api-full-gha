@@ -5,33 +5,47 @@ const mongoose = require('mongoose');
 const { celebrate, Joi } = require('celebrate');
 const { errors } = require('celebrate');
 const helmet = require('helmet');
+const cors = require('cors');
 const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const {
   createUser, login,
 } = require('./controllers/users');
 const { URL_REGEX } = require('./utils/constants');
-const { corsMiddleware } = require('./middlewares/cors');
+const { DB_URL, PORT } = require('./config');
 
 // Создание экземпляра приложения Express
 const app = express();
-// Применение промежуточного ПО для обеспечения безопасности
-app.use(helmet());
+
 // Отключение заголовка "x-powered-by"
 app.disable('x-powered-by');
 
-// Определение порта из переменной окружения
-const { PORT = 3000 } = process.env;
 // Подключение к базе данных MongoDB
 mongoose
-  .connect('mongodb://127.0.0.1:27017/mestodb', {
-    useNewUrlParser: true,
-  });
+  .connect(DB_URL);
+
 app.use(requestLogger); // подключаем логгер запросов
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(corsMiddleware);
+
+const allowedCors = ['https://darimon.nomoredomains.xyz', 'http://localhost:3000'];
+
+const corsOptions = {
+  origin: allowedCors,
+  optionsSuccessStatus: 200,
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+// Применение промежуточного ПО для обеспечения безопасности
+app.use(helmet());
+// краш-тест для проверки автоматического перезапуска сервера
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
@@ -59,4 +73,6 @@ app.use(errors());
 
 app.use(require('./middlewares/error'));
 // Запуск сервера на указанном порту
-app.listen(PORT);
+app.listen(PORT, () => {
+  console.log(`Приложение слушает порт ${PORT}`);
+});

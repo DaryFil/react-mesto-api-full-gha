@@ -2,9 +2,9 @@ import {settings} from "./constants.js";
 
 
 class Api {
-  constructor(setting) {
-    this._address = setting.baseUrl;
-    this._headers = setting.headers;
+  constructor() {
+    this._address = settings.baseUrl;
+    this._headers = settings.headers;
   }
 
   _checkAnswer(res) {
@@ -97,7 +97,7 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: "http://api.darimon.nomoredomains.xyz",
+  baseUrl: "https://api.darimon.nomoredomains.xyz",
   headers: {
     authorization: `Bearer ${localStorage.getItem('jwt')}`,
     "Content-Type": "application/json",

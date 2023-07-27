@@ -35,4 +35,4 @@ class ApiAuth {
     }).then(this._checkAnswer);
   }
 }
-export const apiAuth = new ApiAuth("http://api.darimon.nomoredomains.xyz");
+export const apiAuth = new ApiAuth("https://api.darimon.nomoredomains.xyz");
