@@ -11,4 +11,4 @@ module.exports = {
   DB_URL,
   NODE_ENV,
   JWT_SECRET,
-  };
+};

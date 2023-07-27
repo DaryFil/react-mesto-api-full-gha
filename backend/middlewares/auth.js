@@ -15,7 +15,7 @@ module.exports = (req, res, next) => {
   const token = extractBearerToken(authorization);
   let payload;
   try {
-    payload = jwt.verify(token, NODE_ENV !== 'production' ? JWT_SECRET : 'some-very-incredible-very-important-and-unbelievable-secret-key' );
+    payload = jwt.verify(token, NODE_ENV !== 'production' ? JWT_SECRET : 'some-very-incredible-very-important-and-unbelievable-secret-key');
   } catch (err) {
     return handleAuthError(res, req, next);
   }

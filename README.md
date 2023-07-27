@@ -12,6 +12,6 @@
 
 IP-адрес 158.160.33.42
 
-Frontend http://darimon.nomoredomains.xyz/
+Frontend https://darimon.nomoredomains.xyz/
 
-Backend http://api.darimon.nomoredomains.xyz/
+Backend https://api.darimon.nomoredomains.xyz/
