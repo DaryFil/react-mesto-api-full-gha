@@ -10,7 +10,7 @@ module.exports.createCard = (req, res, next) => {
   const owner = req.user;
 
   Card.create({ name, link, owner })
-    .then((card) => res.send({ data: card }))
+    .then((card) => res.send(card))
     .catch((error) => {
       if (error instanceof mongoose.Error.ValidationError) {
         next(new BadRequest('Переданы некорректные данные при создании карточки'));
@@ -24,7 +24,7 @@ module.exports.createCard = (req, res, next) => {
 module.exports.getCards = (req, res, next) => {
   Card.find({})
     .populate('owner')
-    .then((cards) => res.send({ data: cards }))
+    .then((cards) => res.send(cards))
     .catch((error) => next(error));
 };
 
@@ -39,7 +39,7 @@ module.exports.deleteCard = (req, res, next) => {
           Card.findByIdAndRemove({ _id: cardId })
             .then((card) => {
               if (card) {
-                res.send({ data: cardId });
+                res.send(cardId);
               }
             })
             .catch((error) => next(error));
@@ -67,7 +67,7 @@ module.exports.likeCard = (req, res, next) => {
     .populate('owner')
     .then((card) => {
       if (card) {
-        res.send({ data: card });
+        res.send(card);
       } else { throw new NotFoundError('Передан несуществующий _id карточки'); }
     })
     .catch((error) => {
@@ -89,7 +89,7 @@ module.exports.dislikeCard = (req, res, next) => {
     .populate('owner')
     .then((card) => {
       if (card) {
-        res.send({ data: card });
+        res.send(card);
       } else { throw new NotFoundError('Передан несуществующий _id карточки'); }
     })
     .catch((error) => {

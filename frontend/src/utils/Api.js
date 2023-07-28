@@ -30,6 +30,13 @@ class Api {
     });
   }
 
+  // getUserInfo() {
+  //   this._headers.authorization = `Bearer ${localStorage.getItem('jwt')}`;
+  //   return this._request(`/users/me`, {
+  //     method: "GET",
+  //     headers: this._headers,
+  //   });
+  // }
   saveUserInfo({name, about}) {
     return this._request(`/users/me`, {
       method: "PATCH",
