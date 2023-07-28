@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
-const BadRequest = require('../errors/bad-request');
-const ForbiddenError = require('../errors/forbidden-err');
-const NotFoundError = require('../errors/not-found-err');
-const Card = require('../models/card');
+const mongoose = require("mongoose");
+const BadRequest = require("../errors/bad-request");
+const ForbiddenError = require("../errors/forbidden-err");
+const NotFoundError = require("../errors/not-found-err");
+const Card = require("../models/card");
 
 // Создание новой карточки
 module.exports.createCard = (req, res, next) => {
@@ -13,7 +13,9 @@ module.exports.createCard = (req, res, next) => {
     .then((card) => res.send({ data: card }))
     .catch((error) => {
       if (error instanceof mongoose.Error.ValidationError) {
-        next(new BadRequest('Переданы некорректные данные при создании карточки'));
+        next(
+          new BadRequest("Переданы некорректные данные при создании карточки")
+        );
       } else {
         next(error);
       }
@@ -39,18 +41,22 @@ module.exports.deleteCard = (req, res, next) => {
           Card.findByIdAndRemove({ _id: cardId })
             .then((card) => {
               if (card) {
-                res.send(cardId);
+                res.send({ data: cardId });
               }
             })
             .catch((error) => next(error));
-        } else { next(new ForbiddenError('Вы не создатель карточки')); }
+        } else {
+          next(new ForbiddenError("Вы не создатель карточки"));
+        }
       } else {
-        throw new NotFoundError('Карточка с указанным _id не найдена.');
+        throw new NotFoundError("Карточка с указанным _id не найдена.");
       }
     })
     .catch((error) => {
       if (error instanceof mongoose.CastError) {
-        next(new BadRequest('Переданы некоректные данные при удалении карточки'));
+        next(
+          new BadRequest("Переданы некоректные данные при удалении карточки")
+        );
       } else {
         next(error);
       }
@@ -62,17 +68,19 @@ module.exports.likeCard = (req, res, next) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: req.user._id } },
-    { new: true },
+    { new: true }
   )
     // .populate('owner')
     .then((card) => {
       if (card) {
         res.send(card);
-      } else { throw new NotFoundError('Передан несуществующий _id карточки'); }
+      } else {
+        throw new NotFoundError("Передан несуществующий _id карточки");
+      }
     })
     .catch((error) => {
       if (error instanceof mongoose.CastError) {
-        next(new BadRequest('Передан некорректный _id карточки'));
+        next(new BadRequest("Передан некорректный _id карточки"));
       } else {
         next(error);
       }
@@ -84,17 +92,21 @@ module.exports.dislikeCard = (req, res, next) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } },
-    { new: true },
+    { new: true }
   )
     // .populate('owner')
     .then((card) => {
       if (card) {
         res.send(card);
-      } else { throw new NotFoundError('Передан несуществующий _id карточки'); }
+      } else {
+        throw new NotFoundError("Передан несуществующий _id карточки");
+      }
     })
     .catch((error) => {
       if (error instanceof mongoose.CastError) {
-        next(new BadRequest('Переданы некорректные данные при создании карточки'));
+        next(
+          new BadRequest("Переданы некорректные данные при создании карточки")
+        );
       } else {
         next(error);
       }
