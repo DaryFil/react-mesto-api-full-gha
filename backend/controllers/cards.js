@@ -10,7 +10,7 @@ module.exports.createCard = (req, res, next) => {
   const owner = req.user;
 
   Card.create({ name, link, owner })
-    .then((card) => res.send(card))
+    .then((card) => res.send({ data: card }))
     .catch((error) => {
       if (error instanceof mongoose.Error.ValidationError) {
         next(new BadRequest('Переданы некорректные данные при создании карточки'));
@@ -23,8 +23,8 @@ module.exports.createCard = (req, res, next) => {
 // Получение карточек из бд
 module.exports.getCards = (req, res, next) => {
   Card.find({})
-    .populate('owner')
-    .then((cards) => res.send(cards))
+    // .populate('owner')
+    .then((cards) => res.send({ data: cards }))
     .catch((error) => next(error));
 };
 
@@ -64,7 +64,7 @@ module.exports.likeCard = (req, res, next) => {
     { $addToSet: { likes: req.user._id } },
     { new: true },
   )
-    .populate('owner')
+    // .populate('owner')
     .then((card) => {
       if (card) {
         res.send(card);
@@ -86,7 +86,7 @@ module.exports.dislikeCard = (req, res, next) => {
     { $pull: { likes: req.user._id } },
     { new: true },
   )
-    .populate('owner')
+    // .populate('owner')
     .then((card) => {
       if (card) {
         res.send(card);
