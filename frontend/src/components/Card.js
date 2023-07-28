@@ -1,22 +1,22 @@
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 import { useContext, useState } from "react";
 
-// export default function
 const Card = ({ card, onCardClick, onCardLike, onCardDelete }) => {
-  const userId = useContext(CurrentUserContext)._id;
+  const { _id: userId } = useContext(CurrentUserContext);
   const isOwn = card.owner === userId; // Определяем, являемся ли мы владельцем текущей карточки
-  const isLiked = card.likes.some((card) => card === userId);
+  // const isLiked = card.likes.some((card) => card === userId);
+  const isLiked = card.likes.some((id) => id === userId);
 
   const handleCardClick = () => {
     onCardClick(card);
-   };
+  };
 
-   const handleCardLike = () => {
+  const handleCardLike = () => {
     onCardLike(card, isLiked);
-   };
-const handleCardDelete = () => {
-  onCardDelete(card._id);
-}
+  };
+  const handleCardDelete = () => {
+    onCardDelete(card._id);
+  };
 
   return (
     <article className="card">
@@ -28,8 +28,11 @@ const handleCardDelete = () => {
       />
       {/* // Далее в разметке используем переменную для условного рендеринга */}
       {isOwn && (
-        <button onClick={handleCardDelete}
-        className="card__delete-button opacity" type="button" />
+        <button
+          onClick={handleCardDelete}
+          className="card__delete-button opacity"
+          type="button"
+        />
       )}
       <div className="card__description">
         <h2 className="card__title">{card.name}</h2>

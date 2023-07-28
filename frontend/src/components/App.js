@@ -76,7 +76,7 @@ function App() {
       .toggleLike(card._id, isLiked ? "DELETE" : "PUT")
       .then((newCard) => {
         setCards((state) =>
-          state.map((c) => (c._id === card._id ? newCard.data : c))
+          state.map((c) => (c._id === card._id ? newCard : c))
         );
       })
       .catch((error) => console.log(`Ошибка: ${error}`));

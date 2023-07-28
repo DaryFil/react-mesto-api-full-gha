@@ -39,7 +39,8 @@ export default function Main({
       </section>
 
       <section className="elements">
-        {[...cards].reverse().map((card) => (
+        {/* {[...cards].reverse().map((card) => ( */}
+        {cards.slice().reverse().map( card => (
           <Card
             card={card}
             key={card._id}
